@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script> <!-- jQuery link 1 -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script> <!-- jQuery link 2 -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script> <!-- jQuery link 3 -->
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.24.0/babel.js"></script> <!-- React link 1 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.1.0/react.min.js"></script> <!-- React link 2 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.1.0/react-dom.min.js"></script> <!-- React link 3 -->
+    <title>To Do List app</title>
+    <style>
+      .highlight {
+        border: 2px dotted red;
+        box-shadow: 15px 15px 50px firebrick
+      }
+    </style>
+  </head>
+  <body>
+<div id="root"></div>
+
+    <script type="text/babel">
+
+const divStyles1 = { /* stilovi na kraju (8) */
+  margin: 'auto',
+  marginTop: '4%',
+  padding: '1%'
+};
+const buttonStyles = { /* (8) */
+  display: 'block',
+  width: '25%',
+  margin: 'auto',
+  padding: '7px 10px',
+  backgroundColor: 'forestgreen',
+  color: 'ivory',
+  fontWeight: 'bolder'
+};
+const inputStyles = { /* (8) */
+  width: '25%',
+  padding: '3px 5px',
+  display: 'block',
+  margin:'auto',
+  marginBottom: '25px'
+};
+const ulStyles = { /* (8) */
+  display: 'block',
+  width: '35%',
+  margin: 'auto',
+  marginTop: '2%',
+  listStyleType: 'none'
+};
+const liStyles = { /* (8) */
+  padding: '12px 17px',
+  boxShadow: '15px 15px 50px gainsboro',
+  marginTop: '20px',
+  textAlign: 'center',
+  border: '1px solid black',
+  position: 'relative'
+};
+const checkBoxStyles = { /* (8) */
+  position: 'absolute',
+  height: '25px',
+  display: 'block',
+  width: '25px',
+  cursor: 'pointer',
+  left: '30%'
+};
+      class ToDoList extends  React.Component { /* prvo se pravi class "inherits from" React.Component (1) */
+        constructor(props) {
+          super(props);
+          this.state = { /* onda se dodaje "state" kao smernica za aplikaciju (3) */
+            input: '',
+            messages: []
+          };
+          this.handleChange = this.handleChange.bind(this); /* this treba da se poveze u constructor funkciji (7) */
+          this.submitMessage = this.submitMessage.bind(this); /* (7) */
+        }
+        handleChange(e) { /* (5) */
+          this.setState({ /* this.setState({}); aktivno menja globalni this.state na lokalnom nivou (6) */
+            input: e.target.value
+          });
+        }
+        submitMessage() { /* (5) */
+          let messageContainer = [...this.state.messages, this.state.input];
+          this.setState({ /* (6) */
+            messages: messageContainer,
+            input: ''
+          });
+        }
+        render() { /* render() f-ja izbacuje HTML tag elemente (2) */
+          const messagePusher = this.state.messages.map((item) => /* SAVEPOINT!!! */
+          <div><input type="checkbox" style={checkBoxStyles} />
+          <li key={item} style={liStyles}>{item}</li></div>);
+          return (
+            <div style={divStyles1}>
+            <div>
+                <input style={inputStyles}
+                onChange={this.handleChange}
+                value={this.state.input}
+                placeholder="Tu du list"
+                />
+              <button style={buttonStyles} onClick={this.submitMessage}>Add a task</button>
+            </div>
+              <ul style={ulStyles}>
+                {messagePusher}
+              </ul>
+            </div>
+          );
+        }
+      };
+      ReactDOM.render(<ToDoList />, document.getElementById('root'));
+    </script>
+    <!-- <script type="text/javascript">
+      $(document).ready(function() {
+        $(".listMember").click(function() {
+          $(this).toggleClass("highlight");
+        });
+      });
+    </script> -->
+  </body>
+</html>
